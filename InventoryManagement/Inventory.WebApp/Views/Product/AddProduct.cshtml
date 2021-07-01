@@ -1,0 +1,231 @@
+﻿@model Inventory.WebApp.Models.ProductViewModel
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default panel-border-color panel-border-color-primary">
+            @if (Model != null)
+            {
+                <div class="panel-heading panel-heading-divider" style="font-size: 22px"><b>Update Product</b></div>
+            }
+            else
+            {
+                <div class="panel-heading panel-heading-divider" style="font-size: 22px"><b>New Product</b></div>
+
+            }
+            <div class="panel-body">
+                @if (Model != null)
+                {
+                    <form action="#" class="form-horizontal group-border-dashed" novalidate="">
+                        <br>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Product Name :</label>
+                            <div class="col-sm-6">
+                                <input type="text" placeholder="Enter the Product Name..." class="form-control parsley-error" data-parsley-id="29" id="productName" name="Name" value="@Model.Name">
+                                <span id="spnNameError" class="spnError" style="display:none;color:red" >*Name is required.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Product Description :</label>
+                            <div class="col-sm-6">
+                                <input type="text" placeholder="Product Description..." class="form-control parsley-error" data-parsley-id="29" id="productDescription" name="Description" value="@Model.Description">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi" for="sel1">Category :</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(m => m.CategoryId, (SelectList)ViewBag.Category, "- Select Category -", new { @class = "form-control" })
+                                <span id="spnCatError" class="spnError" style="display:none;color:red">*Category is required.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Quantity :</label>
+                            <div class="col-sm-6">
+                                <input type="number" min="1" data-parsley-max="6" placeholder="Enter the quantity..." class="form-control parsley-error" data-parsley-id="39" name="Quantity" id="quantity" value="@Model.Quantity">
+                                <span id="spnQtyError" class="spnError" style="display:none;color:red">*Quantity is required.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Cost Price :</label>
+                            <div class="col-sm-6">
+                                <input type="text" data-parsley-max="6" placeholder="Enter the cost price..." class="form-control parsley-error" data-parsley-id="39" name="PurchasingPrice" id="productPurchase" value="@Model.PurchasingPrice">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Selling Price :</label>
+                            <div class="col-sm-6">
+                                <input type="text" data-parsley-max="6" placeholder="Enter the sales price..." class="form-control parsley-error" data-parsley-id="39" name="SellingPrice" id="productSelling" value="@Model.SellingPrice">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-2 col-md-9 ">
+                                <input class="btn btn-space btn-warning kaydet pull-right" style="font-size: 16px; height:40px" id="btnUpdate" value="Update" onclick="Update(@Model.Id)" />
+                                <input class="btn btn-space btn-default kaydet pull-right" style="height: 40px; font-size: 14px;" id="btnCancel" onclick="window.location.href ='@Url.Action("ListProduct","Product")'" value="Cancel" />
+                                <input type="hidden" id="@Model.Id" />
+                            </div>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <form action="#" class="form-horizontal group-border-dashed" novalidate="">
+                        <br>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Product Name :</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control parsley-error" data-parsley-id="29" id="productName" name="Name">
+                                <span id="spnNameError" style="display:none;color:red">*Name is required.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Product Description :</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control parsley-error" data-parsley-id="29" id="productDescription" name="Description">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi" for="sel1">Category :</label>
+                            <div class="col-sm-6">
+                                @Html.DropDownListFor(m => m.CategoryId, (SelectList)ViewBag.Category, "- Select Category -", new { @class = "form-control" })
+                                <span id="spnCatError" class="spnError" style="display:none;color:red">*Category is required.</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Quantity :</label>
+                            <div class="col-sm-6">
+                                <input type="number" min="1" data-parsley-max="6" class="form-control parsley-error" data-parsley-id="39" name="Quantity" id="quantity">
+                                <span id="spnQtyError" class="spnError" style="display:none;color:red">*Quantity is required.</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Cost Price :</label>
+                            <div class="col-sm-6">
+                                <input type="text" data-parsley-max="6" class="form-control parsley-error" data-parsley-id="39" name="PurchasingPrice" id="productPurchase">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label yazi">Selling Price :</label>
+                            <div class="col-sm-6">
+                                <input type="text" data-parsley-max="6" class="form-control parsley-error" data-parsley-id="39" name="SellingPrice" id="productSelling">
+                            </div>
+                        </div>
+                        @*<div class="form-group">
+                                <div style="margin-top: 70px">
+                                    <label class="col-sm-3 control-label yazi">Picture :</label>
+                                    <div class="col-sm-4">
+                                        <input type="file" accept="image/*" id="inputFile" placeholder="Ürün Resmi Ekleyiniz..." class="form-control parsley-error">
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <img id="imgLogo" style="margin-top: -70px" width="175" height="135" src="http://news.yuvayana.org/wp-content/uploads/sites/10/2015/06/muther-dairy-milk.jpg">
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="form-group">
+                            <div class="col-sm-2 col-md-9 ">
+                                <input class="btn btn-space btn-success kaydet pull-right" style="font-size: 16px; height:40px" id="btnSave" value="Save" />
+                                <input class="btn btn-space btn-default kaydet pull-right" style="height: 40px; font-size: 14px;" id="btnCancel" onclick="window.location.href ='@Url.Action("ListProduct","Product")'" value="Cancel" />
+                            </div>
+                        </div>
+
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+var token = sessionStorage.getItem("accessToken");
+var headers = {};
+headers.Authorization = "Bearer " + token;
+
+$(document).ready(function() {
+  if (token == null) {
+        toastr.info( "Please try again after signin up !", { timeOut: 3000 });
+        window.location.href = "/UserManagement/Login";
+  }
+});
+
+    $("#btnSave").click(function() {
+    if(validateData())
+  $.ajax({
+    url: "/api/Products",
+    method: "POST",
+    headers: headers,
+    data: {
+      Name: $("#productName").val(),
+      Description: $("#productDescription").val(),
+      SellingPrice: $("#productSelling").val(),
+      PurchasingPrice: $("#productPurchase").val(),
+      Quantity: $("#quantity").val(),
+      CategoryId: $("#CategoryId").val()
+    },
+
+    success: function() {
+      toastr.success( "Product added successfully !", { timeOut: 2000 });
+      window.location.href = "/Product/ListProduct";
+    },
+    error: function(jqXHR) {
+      alert("Error !");
+    }
+  });
+});
+
+var Update = function(productId) {
+    if(validateData())
+  $.ajax({
+    url: "/api/Products",
+    method: "PUT",
+    headers: headers,
+    data: {
+      Id: productId,
+      Name: $("#productName").val(),
+      Description: $("#productDescription").val(),
+      SellingPrice: $("#productSelling").val(),
+      PurchasingPrice: $("#productPurchase").val(),
+      Quantity: $("#quantity").val(),
+      CategoryId: $("#CategoryId").val(),
+    },
+    success: function() {
+    toastr.success( "Product updated successfully !", { timeOut: 2000 });
+      window.location.href = "/Product/ListProduct";
+    },
+    error: function(jqXHR) {
+      alert("Error !");
+    }
+  });
+};
+function validateData()
+    {
+    var valid=true;
+        if($.trim($("#productName").val())=="")
+    {
+        $("#spnNameError").css("display","block");
+            valid =false;
+    }
+    
+     if($("#CategoryId").val()=="")
+    {
+        $("#spnCatError").css("display","block");
+            valid =false;
+    }
+    
+     if($("#quantity").val()=="")
+    {
+        $("#spnQtyError").css("display","block");
+            valid =false;
+    }
+    if(valid)
+        $(".spnError").hide();
+    return valid;
+    }
+    
+</script>
+
+
