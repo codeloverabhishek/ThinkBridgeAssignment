@@ -1,5 +1,4 @@
 ﻿@model Inventory.WebApp.Models.CategoryViewModel
-
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default panel-border-color panel-border-color-primary">
@@ -7,28 +6,23 @@
             <div class="panel-body">
                 <form action="#" class="form-horizontal group-border-dashed" novalidate="">
                     <br>
-
                     <div class="form-group">
                         <label class="col-sm-3 control-label yazi"> Cateogry Name :</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control parsley-error" data-parsley-id="29" id="categoryName" value="@Model.Name">
                         </div>
                     </div>
-
                     <div class="form-group">
                         <div class="col-sm-2 col-md-9">
                             <input class="btn btn-space btn-warning pull-right" style="font-size: 16px; width: 80px; height:38px;" id="btnUpdate" value="Update" onclick="Update(@Model.Id)" />
-
-                            <button class="btn btn-space btn-default pull-right" style="height: 40px; font-size: 14px;"  id="btnCancel" onclick="Cancel()" >Cancel</button>
+                            <button class="btn btn-space btn-default pull-right" style="height: 40px; font-size: 14px;" id="btnCancel" onclick="Cancel()">Cancel</button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 <script>
     var token = sessionStorage.getItem("accessToken");
     var headers = {};
@@ -42,6 +36,11 @@
     });
 
         var Update = function (categoryId) {
+    if($.trim($("#categoryName").val())==="")
+    {
+        toastr.error( "Name is required !", { timeOut: 3000 });
+        return false;
+    }
             $.ajax({
                 url: "/api/Categories",
                 method: "PUT",
@@ -61,6 +60,5 @@
         };
         var Cancel=function()
     {
-        window.location.replace("/Product/CategoryList");   
-    }
-</script>
+        window.location.replace("/Product/CategoryList");
+    }</script>

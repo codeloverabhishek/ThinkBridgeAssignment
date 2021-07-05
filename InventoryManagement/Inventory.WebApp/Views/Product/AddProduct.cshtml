@@ -50,13 +50,16 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label yazi">Cost Price :</label>
                             <div class="col-sm-6">
-                                <input type="text" data-parsley-max="6" placeholder="Enter the cost price..." class="form-control parsley-error" data-parsley-id="39" name="PurchasingPrice" id="productPurchase" value="@Model.PurchasingPrice">
+                                <input type="number" min="1" data-parsley-max="6" placeholder="Enter the cost price..." class="form-control parsley-error" data-parsley-id="39" name="PurchasingPrice" id="productPurchase" value="@Model.PurchasingPrice">
+                                <span id="spnPPurError" class="spnError" style="display:none;color:red">*Cost Price is required.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label yazi">Selling Price :</label>
                             <div class="col-sm-6">
-                                <input type="text" data-parsley-max="6" placeholder="Enter the sales price..." class="form-control parsley-error" data-parsley-id="39" name="SellingPrice" id="productSelling" value="@Model.SellingPrice">
+                                <input type="number" min="1" data-parsley-max="6" placeholder="Enter the sales price..." class="form-control parsley-error" data-parsley-id="39" name="SellingPrice" id="productSelling" value="@Model.SellingPrice">
+                                <span id="spnPSellError" class="spnError" style="display:none;color:red">*Selling Price is required.</span>
+                                <span id="spnPSellMinError" class="spnError" style="display:none;color:red">*Selling price should be greater than Cost Price.</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -99,18 +102,22 @@
                             <div class="col-sm-6">
                                 <input type="number" min="1" data-parsley-max="6" class="form-control parsley-error" data-parsley-id="39" name="Quantity" id="quantity">
                                 <span id="spnQtyError" class="spnError" style="display:none;color:red">*Quantity is required.</span>
+
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label yazi">Cost Price :</label>
                             <div class="col-sm-6">
-                                <input type="text" data-parsley-max="6" class="form-control parsley-error" data-parsley-id="39" name="PurchasingPrice" id="productPurchase">
+                                <input type="number" min="1" data-parsley-max="6" class="form-control parsley-error" data-parsley-id="39" name="PurchasingPrice" id="productPurchase">
+                                <span id="spnPPurError" class="spnError" style="display:none;color:red">*Cost Price is required.</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label yazi">Selling Price :</label>
                             <div class="col-sm-6">
-                                <input type="text" data-parsley-max="6" class="form-control parsley-error" data-parsley-id="39" name="SellingPrice" id="productSelling">
+                                <input type="number" min="1" data-parsley-max="6" class="form-control parsley-error" data-parsley-id="39" name="SellingPrice" id="productSelling">
+                                <span id="spnPSellError" class="spnError" style="display:none;color:red">*Selling Price is required.</span>
+                                <span id="spnPSellMinError" class="spnError" style="display:none;color:red">*Selling price should be greater than Cost Price.</span>
                             </div>
                         </div>
                         @*<div class="form-group">
@@ -192,12 +199,13 @@ var Update = function(productId) {
       Quantity: $("#quantity").val(),
       CategoryId: $("#CategoryId").val(),
     },
-    success: function() {
+    success: function(e) {
+    
     toastr.success( "Product updated successfully !", { timeOut: 2000 });
       window.location.href = "/Product/ListProduct";
     },
     error: function(jqXHR) {
-      alert("Error !");
+      toastr.error( jqXHR.responseText, { timeOut: 2000 });
     }
   });
 };
@@ -221,8 +229,27 @@ function validateData()
         $("#spnQtyError").css("display","block");
             valid =false;
     }
+     if($("#productPurchase").val()=="")
+    {
+        $("#spnPPurError").css("display","block");
+            valid =false;
+    }
+     if($("#productSelling").val()=="")
+    {
+        $("#spnPSellError").css("display","block");
+            valid =false;
+    }
     if(valid)
+    {
         $(".spnError").hide();
+        if(parseFloat($("#productPurchase").val()) > parseFloat($("#productSelling").val()))
+        {
+            
+            $("#spnPSellMinError").css("display","block");
+            valid =false;
+        }
+
+    }
     return valid;
     }
     

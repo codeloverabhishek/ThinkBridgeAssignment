@@ -4,10 +4,14 @@ using Inventory.WebApp.Models;
 using System.Linq;
 using System.Web.Http;
 using System.Data.Entity.Infrastructure;
+using Inventory.WebApp.App_Start;
+using System.Net.Http;
+using System.Net;
 
 namespace Inventory.WebApp.Controllers.Api
 {
     [Authorize]
+    [HandleException]
     public class ProductsController : ApiController
     {
         private IProductBusiness _product;
@@ -59,12 +63,7 @@ namespace Inventory.WebApp.Controllers.Api
         [HttpPost]
         public IHttpActionResult Insert(ProductViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            try
-            {
+           
                 Product product = new Product
                 {
                     Id = model.Id,
@@ -77,16 +76,13 @@ namespace Inventory.WebApp.Controllers.Api
                 };
                 _product.Insert(product);
                 return Ok(product);
-            }
-            catch (DbUpdateConcurrencyException ex)
-            {
-                return BadRequest();
-            }
+            
         }
 
         [HttpPut]
         public IHttpActionResult Update(ProductViewModel model)
         {
+            
             Product product = new Product
             {
                 Id = model.Id,

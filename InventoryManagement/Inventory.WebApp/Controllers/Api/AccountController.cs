@@ -15,10 +15,12 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using Inventory.WebApp.App_Start;
 
 namespace Inventory.WebApp.Controllers
 {
     [Authorize]
+    [HandleException]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {

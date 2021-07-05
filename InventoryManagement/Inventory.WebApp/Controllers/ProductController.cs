@@ -4,9 +4,12 @@ using Inventory.Business.Interface;
 using Inventory.WebApp.Models;
 using System.Linq;
 using System.Web.Mvc;
+using Inventory.WebApp.App_Start;
+using System;
 
 namespace Inventory.WebApp.Controllers
 {
+    [HandleError]
     public class ProductController : Controller
     {
         private ICategoryBusiness _category;
@@ -49,6 +52,7 @@ namespace Inventory.WebApp.Controllers
         {
             if (id > 0)
             {
+
                 var product = _product.GetById(id);
                 if (product != null)
                 {
@@ -69,6 +73,11 @@ namespace Inventory.WebApp.Controllers
                     return View("AddProduct", vm);
 
                 }
+                else
+                {
+                    ViewBag.ErrorMessage = "No product found for provided product id";
+                    return View("Error");
+                }
 
             }
 
@@ -79,8 +88,16 @@ namespace Inventory.WebApp.Controllers
         [HttpPost]
         public ActionResult AddProduct(ProductViewModel model)
         {
-            var result = Mapper.Map<ProductViewModel, Product>(model);
-            _product.Insert(result);
+            try
+            {
+                var result = Mapper.Map<ProductViewModel, Product>(model);
+                _product.Insert(result);
+            }
+            catch(Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
             return View();
         }
 
@@ -99,13 +116,22 @@ namespace Inventory.WebApp.Controllers
         public ActionResult EditCategory(int id)
         {
             var result = _category.GetById(id);
-
-            CategoryViewModel model = new CategoryViewModel
+            try
             {
-                Id = result.Id,
-                Name = result.Name
-            };
-            return View("EditCategory", model);
+                
+                CategoryViewModel model = new CategoryViewModel
+                {
+                    Id = result.Id,
+                    Name = result.Name
+                };
+                return View("EditCategory", model);
+            }
+            catch(Exception ex)
+            {
+                ViewBag.ErrorMessage = ex.Message;
+                return View("Error");
+            }
+           
         }
 
     }

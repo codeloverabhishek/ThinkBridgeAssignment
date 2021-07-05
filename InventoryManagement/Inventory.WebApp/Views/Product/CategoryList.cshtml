@@ -82,6 +82,7 @@ var Delete = function(id) {
     method: "DELETE",
     headers: headers,
     success: function() {
+    toastr.success( "Category deleted successfully !", { timeOut: 2000 });
                     window.location.replace("/Product/CategoryList");
 
     },
@@ -92,6 +93,11 @@ var Delete = function(id) {
 };
 
 $("#btnSave").click(function() {
+    if($.trim($("#categoryName").val())==="")
+    {
+    toastr.error( "Name is required !", { timeOut: 3000 });
+        return false;
+    }
   $.ajax({
     url: "/api/Categories",
     method: "POST",

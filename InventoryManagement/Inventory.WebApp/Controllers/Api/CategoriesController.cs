@@ -7,11 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Inventory.WebApp.App_Start;
 
 namespace Inventory.WebApp.Controllers.Api
 {
     [Authorize]
     [RoutePrefix("api/Categories")]
+    [HandleException]
     public class CategoriesController : ApiController
     {
         ICategoryBusiness _category;
@@ -63,6 +65,7 @@ namespace Inventory.WebApp.Controllers.Api
         [HttpPut]
         public IHttpActionResult Update(CategoryViewModel model)
         {
+            
             Category category = new Category
             {
                 Id = model.Id,

@@ -2,6 +2,7 @@
 using Inventory.Business.Interface;
 using Inventory.Repository.Infrastucture;
 using Inventory.Repository.Infrastucture.Contract;
+using Inventory.WebApp.App_Start;
 using Inventory.WebApp.Resolver;
 using Microsoft.Owin.Security.OAuth;
 using System.Net.Http.Headers;
@@ -15,6 +16,7 @@ namespace Inventory.WebApp
     {
         public static void Register(HttpConfiguration config)
         {
+            config.Filters.Add(new HandleException());
             var container = new UnityContainer();
 
             container.RegisterType<IUnitOfWork, UnitOfWork>();
